@@ -20,18 +20,26 @@ addGallery(galleryItems);
 
 ulInsert.addEventListener("click", onGalleryClick);
 
+let lightBox;
+
 function onGalleryClick(event) {
   const { target } = event;
+  document.addEventListener("keydown", onEscClick);
   event.preventDefault();
   if (target.nodeName !== "IMG") {
     return;
   }
-
-  basicLightbox
-    .create(
-      `
+  lightBox = basicLightbox.create(
+    `
          <img src="${target.parentNode.href}" width="800" height="600">
    `
-    )
-    .show();
+  );
+  lightBox.show();
 }
+
+const onEscClick = (event) => {
+  if (event.code === "Escape") {
+    lightBox.close();
+    document.removeEventListener("keydown", onEscClick);
+  }
+};
